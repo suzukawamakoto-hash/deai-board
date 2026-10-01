@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>であい掲示板</title>
 
 <style>
@@ -12,7 +13,12 @@
 
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Noto Sans JP",
+    Arial,
+    sans-serif;
   background: #f5f7fb;
   color: #333;
 }
@@ -20,13 +26,13 @@ body {
 header {
   background: linear-gradient(135deg, #ff6b9d, #8b5cf6);
   color: white;
-  padding: 25px 18px;
+  padding: 28px 18px;
   text-align: center;
 }
 
 header h1 {
   margin: 0;
-  font-size: 26px;
+  font-size: 27px;
 }
 
 header p {
@@ -40,10 +46,12 @@ header p {
   padding: 15px;
 }
 
+/* 注意事項 */
+
 .notice {
   background: white;
-  border-radius: 12px;
-  padding: 15px;
+  border-radius: 14px;
+  padding: 16px;
   margin-bottom: 15px;
   box-shadow: 0 2px 8px #ddd;
 }
@@ -51,6 +59,13 @@ header p {
 .notice strong {
   color: #e11d48;
 }
+
+.notice p {
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+/* 投稿ボタン */
 
 .post-button {
   display: block;
@@ -63,7 +78,14 @@ header p {
   font-size: 17px;
   font-weight: bold;
   margin-bottom: 15px;
+  cursor: pointer;
 }
+
+.post-button:active {
+  transform: scale(0.98);
+}
+
+/* 検索 */
 
 .search {
   width: 100%;
@@ -72,7 +94,14 @@ header p {
   border-radius: 10px;
   margin-bottom: 15px;
   font-size: 15px;
+  outline: none;
 }
+
+.search:focus {
+  border-color: #ff4f87;
+}
+
+/* 投稿 */
 
 .post {
   background: white;
@@ -93,17 +122,33 @@ header p {
   margin-top: 4px;
 }
 
+.age {
+  font-size: 13px;
+  color: #777;
+}
+
 .post h3 {
   margin: 12px 0 7px;
+  font-size: 18px;
 }
 
 .post p {
-  line-height: 1.6;
+  line-height: 1.7;
+  white-space: pre-wrap;
 }
+
+.date {
+  font-size: 12px;
+  color: #999;
+  margin-top: 10px;
+}
+
+/* ボタン */
 
 .actions {
   display: flex;
   gap: 8px;
+  margin-top: 12px;
 }
 
 .actions button {
@@ -112,13 +157,169 @@ header p {
   background: white;
   border-radius: 8px;
   padding: 9px;
+  cursor: pointer;
 }
+
+.actions button:hover {
+  background: #f8f8f8;
+}
+
+.like-button {
+  color: #e11d48;
+}
+
+.report-button {
+  color: #777;
+}
+
+/* モーダル */
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.55);
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.modal-content {
+  background: white;
+  max-width: 500px;
+  margin: 30px auto;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+}
+
+.close {
+  float: right;
+  font-size: 26px;
+  cursor: pointer;
+  color: #777;
+}
+
+/* フォーム */
+
+label {
+  display: block;
+  margin-top: 13px;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 9px;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.submit-button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #ff4f87;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* 年齢確認 */
+
+.age-gate {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.age-box {
+  background: white;
+  border-radius: 18px;
+  padding: 25px;
+  max-width: 420px;
+  text-align: center;
+}
+
+.age-box h2 {
+  color: #e11d48;
+}
+
+.age-box p {
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.age-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.age-buttons button {
+  flex: 1;
+  padding: 13px;
+  border-radius: 10px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.yes-button {
+  background: #ff4f87;
+  color: white;
+}
+
+.no-button {
+  background: #ddd;
+}
+
+/* 空表示 */
+
+.empty {
+  text-align: center;
+  background: white;
+  padding: 30px 15px;
+  border-radius: 14px;
+  color: #888;
+}
+
+/* フッター */
 
 footer {
   text-align: center;
-  padding: 25px;
+  padding: 30px 15px;
   color: #888;
   font-size: 12px;
+  line-height: 1.7;
 }
 </style>
 </head>
@@ -134,5 +335,618 @@ footer {
 
   <div class="notice">
     <strong>⚠️ ご利用について</strong>
+
     <p>
-      18歳未満の方は
+      この掲示板は18歳以上の方を対象としています。
+      個人情報や連絡先などを不用意に公開しないでください。
+      不審な投稿や迷惑行為を見つけた場合は通報してください。
+    </p>
+  </div>
+
+  <button class="post-button" onclick="openPostModal()">
+    ＋ 新しく投稿する
+  </button>
+
+  <input
+    id="searchInput"
+    class="search"
+    type="search"
+    placeholder="🔍 投稿を検索..."
+    oninput="searchPosts()"
+  >
+
+  <div id="posts"></div>
+
+</div>
+
+<footer>
+  18歳未満の利用は禁止しています。<br>
+  安全に注意してご利用ください。<br>
+  © 2026 であい掲示板
+</footer>
+
+
+<!-- 年齢確認 -->
+
+<div id="ageGate" class="age-gate">
+
+  <div class="age-box">
+
+    <h2>🔞 年齢確認</h2>
+
+    <p>
+      このサイトは18歳以上の方を対象としています。
+      <br><br>
+      あなたは18歳以上ですか？
+    </p>
+
+    <div class="age-buttons">
+
+      <button
+        class="yes-button"
+        onclick="confirmAge()">
+        はい（18歳以上）
+      </button>
+
+      <button
+        class="no-button"
+        onclick="denyAge()">
+        いいえ
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- 投稿フォーム -->
+
+<div id="postModal" class="modal">
+
+  <div class="modal-content">
+
+    <span class="close" onclick="closePostModal()">×</span>
+
+    <h2>📝 新しく投稿</h2>
+
+    <form onsubmit="addPost(event)">
+
+      <label>名前</label>
+
+      <input
+        id="name"
+        type="text"
+        maxlength="30"
+        placeholder="例：まこ"
+        required
+      >
+
+      <label>年齢</label>
+
+      <input
+        id="age"
+        type="number"
+        min="18"
+        max="100"
+        placeholder="18"
+        required
+      >
+
+      <label>地域</label>
+
+      <select id="area" required>
+
+        <option value="">選択してください</option>
+        <option>北海道</option>
+        <option>東北</option>
+        <option>関東</option>
+        <option>北陸</option>
+        <option>東海</option>
+        <option>関西</option>
+        <option>中国</option>
+        <option>四国</option>
+        <option>九州・沖縄</option>
+        <option>その他</option>
+
+      </select>
+
+      <label>タイトル</label>
+
+      <input
+        id="title"
+        type="text"
+        maxlength="60"
+        placeholder="例：気軽に話せる人募集"
+        required
+      >
+
+      <label>本文</label>
+
+      <textarea
+        id="message"
+        maxlength="500"
+        placeholder="自己紹介や募集内容を書いてください"
+        required
+      ></textarea>
+
+      <button
+        class="submit-button"
+        type="submit">
+        投稿する
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   初期データ
+========================= */
+
+const defaultPosts = [
+
+  {
+    id: 1,
+    name: "まこ",
+    age: 20,
+    area: "関東",
+    title: "気軽に話せる人募集",
+    message: "趣味の話など、気軽に話せる人を探しています！",
+    likes: 3,
+    date: "2026/10/02"
+  },
+
+  {
+    id: 2,
+    name: "ゆう",
+    age: 24,
+    area: "関西",
+    title: "仲良くなれる人募集",
+    message: "まずは掲示板でゆっくりお話しできたら嬉しいです。",
+    likes: 1,
+    date: "2026/10/02"
+  }
+
+];
+
+
+/* =========================
+   投稿データ
+========================= */
+
+let posts =
+  JSON.parse(localStorage.getItem("deaiPosts"))
+  || defaultPosts;
+
+
+/* =========================
+   ページ読み込み
+========================= */
+
+window.onload = function() {
+
+  const ageConfirmed =
+    localStorage.getItem("ageConfirmed");
+
+  if (ageConfirmed !== "yes") {
+    document.getElementById("ageGate").style.display = "flex";
+  }
+
+  renderPosts();
+
+};
+
+
+/* =========================
+   年齢確認
+========================= */
+
+function confirmAge() {
+
+  localStorage.setItem(
+    "ageConfirmed",
+    "yes"
+  );
+
+  document.getElementById("ageGate").style.display =
+    "none";
+}
+
+
+function denyAge() {
+
+  document.body.innerHTML = `
+
+    <div style="
+      text-align:center;
+      padding:60px 20px;
+      font-family:Arial,sans-serif;
+    ">
+
+      <h2>ご利用いただけません</h2>
+
+      <p>
+        このサイトは18歳以上の方を対象としています。
+      </p>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================
+   投稿表示
+========================= */
+
+function renderPosts(keyword = "") {
+
+  const container =
+    document.getElementById("posts");
+
+  container.innerHTML = "";
+
+  const filtered =
+    posts.filter(post => {
+
+      const text =
+        `${post.name}
+        ${post.area}
+        ${post.title}
+        ${post.message}`.toLowerCase();
+
+      return text.includes(
+        keyword.toLowerCase()
+      );
+
+    });
+
+
+  if (filtered.length === 0) {
+
+    container.innerHTML = `
+
+      <div class="empty">
+        投稿が見つかりませんでした。
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  filtered.forEach(post => {
+
+    const article =
+      document.createElement("div");
+
+    article.className = "post";
+
+    article.innerHTML = `
+
+      <div class="user">
+        👤 ${escapeHTML(post.name)}
+      </div>
+
+      <div class="age">
+        ${post.age}歳
+      </div>
+
+      <div class="area">
+        📍 ${escapeHTML(post.area)}
+      </div>
+
+      <h3>
+        ${escapeHTML(post.title)}
+      </h3>
+
+      <p>
+        ${escapeHTML(post.message)}
+      </p>
+
+      <div class="date">
+        投稿日：${escapeHTML(post.date)}
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="like-button"
+          onclick="likePost(${post.id})">
+
+          ❤️ ${post.likes}
+
+        </button>
+
+        <button
+          class="report-button"
+          onclick="reportPost(${post.id})">
+
+          🚩 通報
+
+        </button>
+
+        <button
+          onclick="deletePost(${post.id})">
+
+          🗑️ 削除
+
+        </button>
+
+      </div>
+
+    `;
+
+    container.appendChild(article);
+
+  });
+
+}
+
+
+/* =========================
+   投稿追加
+========================= */
+
+function addPost(event) {
+
+  event.preventDefault();
+
+
+  const name =
+    document.getElementById("name").value.trim();
+
+  const age =
+    Number(document.getElementById("age").value);
+
+  const area =
+    document.getElementById("area").value;
+
+  const title =
+    document.getElementById("title").value.trim();
+
+  const message =
+    document.getElementById("message").value.trim();
+
+
+  if (age < 18) {
+
+    alert(
+      "18歳以上の方のみ投稿できます。"
+    );
+
+    return;
+  }
+
+
+  const newPost = {
+
+    id: Date.now(),
+
+    name: name,
+
+    age: age,
+
+    area: area,
+
+    title: title,
+
+    message: message,
+
+    likes: 0,
+
+    date:
+      new Date().toLocaleDateString(
+        "ja-JP"
+      )
+
+  };
+
+
+  posts.unshift(newPost);
+
+
+  localStorage.setItem(
+    "deaiPosts",
+    JSON.stringify(posts)
+  );
+
+
+  document.querySelector(
+    "#postModal form"
+  ).reset();
+
+
+  closePostModal();
+
+  renderPosts();
+
+  alert("投稿しました！");
+
+}
+
+
+/* =========================
+   いいね
+========================= */
+
+function likePost(id) {
+
+  const post =
+    posts.find(p => p.id === id);
+
+  if (!post) return;
+
+  post.likes++;
+
+  localStorage.setItem(
+    "deaiPosts",
+    JSON.stringify(posts)
+  );
+
+  renderPosts(
+    document.getElementById(
+      "searchInput"
+    ).value
+  );
+
+}
+
+
+/* =========================
+   通報
+========================= */
+
+function reportPost(id) {
+
+  const post =
+    posts.find(p => p.id === id);
+
+  if (!post) return;
+
+
+  const result =
+    confirm(
+      "この投稿を通報しますか？\n\n" +
+      "不適切な内容、迷惑行為、危険な勧誘などがある場合に通報してください。"
+    );
+
+
+  if (result) {
+
+    alert(
+      "通報を受け付けました。\n" +
+      "管理者による確認が必要です。"
+    );
+
+  }
+
+}
+
+
+/* =========================
+   投稿削除
+========================= */
+
+function deletePost(id) {
+
+  const result =
+    confirm(
+      "この投稿を削除しますか？"
+    );
+
+  if (!result) return;
+
+
+  posts =
+    posts.filter(
+      post => post.id !== id
+    );
+
+
+  localStorage.setItem(
+    "deaiPosts",
+    JSON.stringify(posts)
+  );
+
+
+  renderPosts(
+    document.getElementById(
+      "searchInput"
+    ).value
+  );
+
+}
+
+
+/* =========================
+   検索
+========================= */
+
+function searchPosts() {
+
+  const keyword =
+    document.getElementById(
+      "searchInput"
+    ).value;
+
+  renderPosts(keyword);
+
+}
+
+
+/* =========================
+   投稿フォーム
+========================= */
+
+function openPostModal() {
+
+  document.getElementById(
+    "postModal"
+  ).style.display = "block";
+
+}
+
+
+function closePostModal() {
+
+  document.getElementById(
+    "postModal"
+  ).style.display = "none";
+
+}
+
+
+/* =========================
+   HTMLエスケープ
+========================= */
+
+function escapeHTML(value) {
+
+  return String(value)
+
+    .replace(/&/g, "&amp;")
+
+    .replace(/</g, "&lt;")
+
+    .replace(/>/g, "&gt;")
+
+    .replace(/"/g, "&quot;")
+
+    .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================
+   モーダル外クリック
+========================= */
+
+window.onclick = function(event) {
+
+  const modal =
+    document.getElementById(
+      "postModal"
+    );
+
+  if (event.target === modal) {
+
+    closePostModal();
+
+  }
+
+};
+
+</script>
+
+</body>
+</html>
