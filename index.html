@@ -587,8 +587,23 @@ footer {
 
 </form>
 
-  </div>  </div>  <script>  
+  </div>  </div>  <script
+                    src="https://cdn.jsdelivr.net
+                    /npm/@supabase/supabase-js@2"><
+                    /script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
+<script>
+  const SUPABASE_URL = "https://zcjetqippvmnbgzchfgg.supabase.co";
+
+const SUPABASE_KEY = "sb_publishable_3JYYFQ8FnJAVpyOw-dwKow_kYFdVsP- "
+
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
 /* =========================  
    自分の端末を識別  
 ========================= */  
