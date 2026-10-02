@@ -504,7 +504,13 @@ textarea{
  border-radius:12px;
  margin-bottom:5px;
  background:#f5f5f5;
- cursor:pointer
+ cursor:pointer;
+ transition:.2s
+}
+
+.message-image:hover{
+ opacity:.9;
+ transform:scale(1.01)
 }
 
 .message-bubble.image-only{
@@ -513,6 +519,55 @@ textarea{
 
 .message-bubble.image-only .message-time{
  padding:0 6px 2px
+}
+
+/* =========================
+   チャット写真拡大ビューア
+========================= */
+
+.chat-photo-viewer{
+ display:none;
+ position:fixed;
+ z-index:5000;
+ inset:0;
+ background:rgba(0,0,0,.95);
+ align-items:center;
+ justify-content:center;
+ padding:20px;
+ touch-action:pinch-zoom
+}
+
+.chat-photo-viewer.show{
+ display:flex
+}
+
+.chat-photo-viewer img{
+ display:block;
+ max-width:100%;
+ max-height:90vh;
+ width:auto;
+ height:auto;
+ object-fit:contain;
+ border-radius:8px;
+ box-shadow:0 5px 35px rgba(0,0,0,.7);
+ user-select:none
+}
+
+.chat-photo-close{
+ position:absolute;
+ top:12px;
+ right:15px;
+ width:46px;
+ height:46px;
+ border:0;
+ border-radius:50%;
+ background:rgba(255,255,255,.92);
+ color:#333;
+ font-size:32px;
+ line-height:1;
+ z-index:5001;
+ cursor:pointer;
+ box-shadow:0 2px 10px rgba(0,0,0,.3)
 }
 
 /* チャット入力 */
@@ -659,6 +714,24 @@ footer{
   max-width:85%
  }
 
+ .chat-photo-viewer{
+  padding:10px
+ }
+
+ .chat-photo-viewer img{
+  max-width:100%;
+  max-height:88vh;
+  border-radius:5px
+ }
+
+ .chat-photo-close{
+  top:10px;
+  right:10px;
+  width:44px;
+  height:44px;
+  font-size:30px
+ }
+
 }
 </style>
 </head>
@@ -694,7 +767,7 @@ footer{
  class="search"
  type="search"
  placeholder="🔍 名前・地域・市区町村など"
- oninput="searchPosts">
+ oninput="searchPosts()">
 
 <select
  id="searchType"
@@ -722,7 +795,9 @@ footer{
 </footer>
 
 
-<!-- 年齢確認 -->
+<!-- =========================
+     年齢確認
+========================= -->
 
 <div id="ageGate" class="age-gate">
 
@@ -752,7 +827,9 @@ footer{
 </div>
 
 
-<!-- 投稿モーダル -->
+<!-- =========================
+     投稿モーダル
+========================= -->
 
 <div id="postModal" class="modal">
 
@@ -913,7 +990,9 @@ footer{
 </div>
 
 
-<!-- プロフィール詳細 -->
+<!-- =========================
+     プロフィール詳細
+========================= -->
 
 <div id="profileModal" class="modal">
 
@@ -928,7 +1007,9 @@ footer{
 </div>
 
 
-<!-- 2人チャット -->
+<!-- =========================
+     2人チャット
+========================= -->
 
 <div id="chatModal" class="modal chat-modal">
 
@@ -1014,6 +1095,32 @@ footer{
 </form>
 
 </div>
+
+</div>
+
+
+<!-- =========================
+     チャット写真拡大表示
+========================= -->
+
+<div
+ id="chatPhotoViewer"
+ class="chat-photo-viewer"
+ onclick="closeChatPhoto()">
+
+<button
+ class="chat-photo-close"
+ onclick="event.stopPropagation();closeChatPhoto()">
+
+×
+
+</button>
+
+<img
+ id="chatPhotoViewerImage"
+ src=""
+ alt="写真を拡大表示"
+ onclick="event.stopPropagation()">
 
 </div>
 
@@ -1817,7 +1924,9 @@ function renderMessages(messages){
    "message-bubble";
 
 
-  /* 画像 */
+  /* =========================
+     画像
+  ========================= */
 
   if(message.image_url){
 
@@ -1829,32 +1938,40 @@ function renderMessages(messages){
    const image=
     document.createElement("img");
 
+
    image.className=
     "message-image";
 
+
    image.src=
     message.image_url;
+
 
    image.alt=
     "送信された画像";
 
 
+   /* ★ 写真タップで拡大 */
+
    image.onclick=()=>{
 
-    window.open(
-     message.image_url,
-     "_blank"
+    openChatPhoto(
+     message.image_url
     );
 
    };
 
 
-   bubble.appendChild(image);
+   bubble.appendChild(
+    image
+   );
 
   }
 
 
-  /* テキスト */
+  /* =========================
+     テキスト
+  ========================= */
 
   if(message.message){
 
@@ -1864,12 +1981,16 @@ function renderMessages(messages){
    text.textContent=
     message.message;
 
-   bubble.appendChild(text);
+   bubble.appendChild(
+    text
+   );
 
   }
 
 
-  /* 時刻 */
+  /* =========================
+     時刻
+  ========================= */
 
   const time=
    document.createElement("span");
@@ -1887,18 +2008,82 @@ function renderMessages(messages){
    "";
 
 
-  bubble.appendChild(time);
+  bubble.appendChild(
+   time
+  );
 
 
-  row.appendChild(bubble);
+  row.appendChild(
+   bubble
+  );
 
-  box.appendChild(row);
+  box.appendChild(
+   row
+  );
 
  });
 
 
  box.scrollTop=
   box.scrollHeight;
+
+}
+
+
+/* =========================
+   チャット写真を拡大
+========================= */
+
+function openChatPhoto(url){
+
+ const viewer=
+  document.getElementById(
+   "chatPhotoViewer"
+  );
+
+ const image=
+  document.getElementById(
+   "chatPhotoViewerImage"
+  );
+
+
+ image.src=url;
+
+ viewer.classList.add(
+  "show"
+ );
+
+ document.body.style.overflow=
+  "hidden";
+
+}
+
+
+/* =========================
+   チャット写真を閉じる
+========================= */
+
+function closeChatPhoto(){
+
+ const viewer=
+  document.getElementById(
+   "chatPhotoViewer"
+  );
+
+ const image=
+  document.getElementById(
+   "chatPhotoViewerImage"
+  );
+
+
+ viewer.classList.remove(
+  "show"
+ );
+
+ image.src="";
+
+ document.body.style.overflow=
+  "";
 
 }
 
@@ -1957,7 +2142,9 @@ async function sendMessage(event){
  let imageUrl="";
 
 
- /* 画像 */
+ /* =========================
+    画像
+ ========================= */
 
  if(file){
 
@@ -1981,7 +2168,9 @@ async function sendMessage(event){
  }
 
 
- /* Supabase保存 */
+ /* =========================
+    Supabase保存
+ ========================= */
 
  const {error}=
   await supabaseClient
@@ -3059,6 +3248,24 @@ function escapeHTML(value){
  );
 
 }
+
+
+/* =========================
+   ESCキーで閉じる
+========================= */
+
+document.addEventListener(
+ "keydown",
+ function(event){
+
+  if(event.key==="Escape"){
+
+   closeChatPhoto();
+
+  }
+
+ }
+);
 
 
 /* =========================
